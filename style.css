@@ -1,0 +1,250 @@
+:root {
+  --primary: #1a1a2e;
+  --secondary: #16213e;
+  --accent: #0f3460;
+  --highlight: #e94560;
+  --text: #eeeeee;
+  --glass: rgba(255, 255, 255, 0.1);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Inter", system-ui;
+  background: var(--primary);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  padding: 2rem;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 400px;
+  gap: 2rem;
+  max-width: 1600px;
+  margin: auto;
+  width: 100%;
+}
+
+/* Enhanced Chess Board */
+.chess-area {
+  background: var(--secondary);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  max-height: 100vh;
+}
+
+.chessboard {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  aspect-ratio: 1;
+  max-height: calc(100vh - 200px);
+  border: 2px solid var(--glass);
+  border-radius: 1rem;
+  overflow: hidden;
+  margin: 10px auto;
+  position: relative;
+  transition: var(--transition);
+  background: red;
+}
+
+.square {
+  position: relative;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  transition: var(--transition);
+}
+
+.square::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: var(--transition);
+}
+
+.square.light {
+  background: #f0d9b5;
+}
+.square.dark {
+  background: #b58863;
+}
+
+.square.highlight::after {
+  background: rgba(233, 69, 96, 0.3);
+  opacity: 1;
+}
+
+.square.legal-move::after {
+  background: radial-gradient(circle, var(--highlight) 20%, transparent 30%);
+  opacity: 0.8;
+}
+
+.square.legal-capture {
+  background: linear-gradient(
+    45deg,
+    transparent 40%,
+    rgba(233, 69, 96, 0.3) 50%,
+    transparent 60%
+  );
+}
+
+.square.in-check {
+  background: repeating-linear-gradient(
+    45deg,
+    rgba(255, 0, 0, 0.2),
+    rgba(255, 0, 0, 0.2) 10px,
+    transparent 10px,
+    transparent 20px
+  );
+}
+
+.piece {
+  width: 85%;
+  height: 85%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  transition: var(--transition);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.piece.dragging {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+}
+
+/* Modern Game Panel */
+.game-panel {
+  background: var(--secondary);
+  backdrop-filter: blur(10px);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.timers {
+  display: grid;
+  gap: 1rem;
+  background: var(--accent);
+  padding: 1.5rem;
+  border-radius: 1rem;
+}
+
+.timer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--glass);
+  border-radius: 0.5rem;
+}
+
+.move-history {
+  flex: 1;
+  background: var(--accent);
+  border-radius: 1rem;
+  padding: 1rem;
+  overflow-y: auto;
+  max-height: 400px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--highlight) transparent;
+}
+
+.move-entry {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  transition: var(--transition);
+}
+
+.move-entry:hover {
+  background: var(--glass);
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+button {
+  padding: 1rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--text);
+  cursor: pointer;
+  transition: var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+button:hover {
+  background: var(--highlight);
+  transform: translateY(-2px);
+}
+
+.status-bar {
+  text-align: center;
+  padding: 1rem;
+  background: var(--accent);
+  border-radius: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  max-height: 50px;
+}
+
+@media (max-width: 1200px) {
+  .container {
+    grid-template-columns: 1fr;
+    max-width: 800px;
+  }
+
+  .chessboard {
+    max-width: 90vw;
+  }
+}
+
+/* Animations */
+@keyframes piece-capture {
+  50% {
+    transform: scale(1.5);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes piece-move {
+  from {
+    transform: translate(var(--dx), var(--dy)) scale(1);
+  }
+  to {
+    transform: translate(0) scale(1);
+  }
+}

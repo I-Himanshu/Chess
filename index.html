@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chess: Modern Chess Experience</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="chess-area">
+        <div class="status-bar" id="status">White's Turn</div>
+        <div class="chessboard" id="board"></div>
+      </div>
+
+      <div class="game-panel">
+        <div class="timers">
+          <div class="timer">
+            <span>⚪ White</span>
+            <span id="white-time">0:00</span>
+          </div>
+          <div class="timer">
+            <span>⚫ Black</span>
+            <span id="black-time">0:00</span>
+          </div>
+        </div>
+
+        <div class="move-history" id="move-history"></div>
+
+        <div class="controls">
+          <button id="undo">↺ Undo</button>
+          <button id="flip">🔄 Flip</button>
+          <button id="reset">🆕 New</button>
+          <button id="hint">💡 Hint</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="chess.js"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
